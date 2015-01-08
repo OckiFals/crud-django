@@ -1,0 +1,13 @@
+{%  extends  'people/base.html' %}
+{%  block  title %}{{object}}{%  endblock  %}
+{%  block  content %}
+<table>
+<thead><tr><th> Person </th><th> Action </th></tr></thead>
+<tbody>
+  {%  for  object  in  object.person_set.all %}
+   <tr><td><a  href="{{object.get_absolute_url}}" > {{object}} </a></td><td><a  href="{{objec
+t.get_update_url}}" > Update </a>  |  <a  href="{{object.get_delete_url}}" > Delete </a></td></t
+r>
+  {%  endfor  %}
+</tbody>
+</table>{%  endblock %}

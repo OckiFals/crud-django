@@ -1,0 +1,24 @@
+{% extends "beer/base.html" %}
+
+{% block content %}
+	<table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Beer Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+			{% for beer in beers %}
+				<tr>
+					<td>
+						<a href="/beers/{{ beer.slug }}">{{ beer }}</a>
+					</td>
+					<td width=250>
+					<a class="btn" href="#">test</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

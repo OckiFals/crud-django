@@ -1,0 +1,24 @@
+{% extends "beer/base.html" %}
+
+{% block content %}
+	<table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Brewery Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+			{% for brewery in brewerys %}
+				<tr>
+					<td>
+						<a href="/brewerys/{{ brewery.slug }}">{{ brewery }}</a>
+					</td>
+					<td width=250>
+					<a class="btn" href="#">test</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

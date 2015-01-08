@@ -1,0 +1,25 @@
+<html>
+<head>
+	{% load static %}
+	<title>Server App!</title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css" media="screen" />
+</head>
+<body>
+	<div class="container">
+		<div class="span10 offset1">
+                    <div class="row">
+						<h1>Servers</h1>
+                    </div>
+		<ul>
+		    {% for server in object_list %}
+		    <li>{{ server.name }}  :  
+		    <a href="{% url "server_edit" server.id %}">{{ server.ip }}</a>
+		    <a href="{% url "server_delete" server.id %}">delete</a>
+		    </li>
+		    {% endfor %}
+		</ul>
+		<a href="{% url "server_new" %}">New</a>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{% extends "beer/base.html" %}
+
+{% block content %}
+	<div class="span10 offset1">
+	    <div class="row">
+            <h3>{{ beer.name }}</h3>
+		</div>
+                     
+        <div class="form-horizontal" >
+           <div class="control-group">
+                <label class="control-label">Name</label>
+                <div class="controls">
+                    <label class="checkbox">
+                        {{ beer.name }}
+                	</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Brewery</label>
+                <div class="controls">
+                    <label class="checkbox">
+                        <a href="/brewerys/{{ beer.brewery.slug }}">{{ beer.brewery }}</a>
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Locality</label>
+                <div class="controls">
+                    <label class="checkbox">
+                        {{ beer.get_locality_display }}
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Description</label>
+                <div class="controls">
+                    <label class="checkbox">
+                        {{ beer.description }}
+                    </label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <a class="btn" href="/beers/">Back</a>
+            </div>               
+        </div>
+    </div>
+{% endblock %}

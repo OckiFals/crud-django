@@ -1,0 +1,15 @@
+<html>
+<head>
+   <title> {%  block  title %}Untitled{%  endblock  %} | Phone Directory </title>
+</head>
+<body>
+<h1> Phonebook CRUD example! </h1>
+<a  href="{%  url  'people_list' %}" > Index </a>  |  <a  href="{%  url  'category_list' %}" > Categ
+ories </a>  |  <a  href="{%  url  'category_add' %}" > Add Category </a>  |  <a  href="{%  url  'pers
+on_add' %}" > Add Person </a>
+<hr/>
+{%  block  content %}
+The end user should never ever see this!
+{%  endblock  %}
+</body>
+</html>
