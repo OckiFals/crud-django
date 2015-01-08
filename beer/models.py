@@ -21,5 +21,5 @@ class Brewery(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name
