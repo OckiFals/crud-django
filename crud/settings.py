@@ -26,8 +26,15 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+# Provide our get_profile()
+AUTH_PROFILE_MODULE = 'drinker.Drinker'
 # Application definition
+
+# URL for @login_required decorator to use
+LOGIN_URL = '/login/'
+
+# redirect authenticated users
+LOGIN_REDIRECT_URL = '/profile/'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -39,6 +46,7 @@ INSTALLED_APPS = (
     'people',
     'servers',
     'beer',
+    'drinker',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -53,7 +61,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'crud.urls'
 
 TEMPLATE_DIRS = (
-    '/home/returnFALSE/PycharmProjects/site/crud/templates/',
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 WSGI_APPLICATION = 'crud.wsgi.application'
@@ -86,9 +94,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/assets/'
 STATICFILES_DIRS = (
-    '/home/returnFALSE/PycharmProjects/site/crud/static/',
+    os.path.join(BASE_DIR, 'assets'),
 )
 
 ADMIN_MEDIA_PREFIX = ('/static/admin/')
