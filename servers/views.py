@@ -7,6 +7,7 @@ from servers.models import Server
 class ServerForm(ModelForm):
     class Meta:
         model = Server
+        fields = '__all__' # changed in 1.8.x
 
 def server_list(request, template_name='servers/server_list.html'):
     servers = Server.objects.all()

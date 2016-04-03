@@ -4,3 +4,141 @@
 	<a href="/beer/">Beer App</a>
 	<a href="/servers/">Server App</a>
 {% endblock %}
+
+<div class="wrap">
+    <nav id="w0" class="navbar-inverse navbar-fixed-top navbar" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#w0-collapse"><span
+                        class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span></button>
+                <a class="navbar-brand" href="{% url 'home' %}"><i class="fa fa-rocket"></i> Delivery Online</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active">
+                        <a href="{% url 'home' %}"><i class="fa fa-fw fa-home"></i> Home</a>
+                    </li>
+                    <li class="dropdown grey">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa fa-fw fa-sitemap">
+                        </i> Projects <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="/beers"><i class="fa fa-fw fa-beer"></i> Beers App</a>
+                            </li>
+                            <li>
+                                <a href="/servers" tabindex="-1"><i class="fa fa-fw fa-cloud"></i> Servers</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="pjax-nav-menu" href="#" data-pjax="#pjax-container"><i
+                            class="fa fa-fw fa-user"></i> About</a></li>
+                    <li><a class="pjax-nav-menu" href="#" data-pjax="#pjax-container"><i
+                            class="fa fa-fw fa-envelope"></i> Contact</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#login"><i class="fa fa-fw fa-unlock"></i>
+                        Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="col-lg-push-12">
+            <div class="site-index">
+
+                <div class="jumbotron">
+                    <h1>Welcome to My Projects!</h1>
+
+                    <p class="lead">Playground for implementation CRUD in Django's based apps.</p>
+
+                    <p>You are visitor to 512</p>
+
+                    <p><a class="btn btn-lg btn-success" href="#">Get Django Tutorial</a></p>
+                </div>
+
+                <div class="body-content">
+
+                    <div class="row" style="margin: auto">
+                        <div class="col-lg-4">
+                            <h2>Django Project</h2>
+
+                            <p>The Web Framework for Prefectionist with Deadline.
+
+                                Django is a high-performance Python framework best for developing Web 2.0 applications.
+
+                                Django comes with rich features: MVC, DAO/ActiveRecord, I18N/L10N, caching,
+                                authentication and role-based access control, scaffolding, testing, auto-admin, etc. It
+                                can reduce your development time significantly..</p>
+
+                            <p><a class="btn btn-default" href="http://www.yiiframework.com/">Yii Framework &raquo;</a>
+                            </p>
+                        </div>
+                        <div class="col-lg-4">
+                            <h2>Jquery Pjax</h2>
+
+                            <p>pjax = pushState + ajax
+
+                                pjax is a jQuery plugin that uses ajax and pushState to deliver a fast browsing
+                                experience with real permalinks, page titles, and a working back button.
+
+                                pjax works by grabbing html from your server via ajax and replacing the content of a
+                                container on your page with the ajax'd html. It then updates the browser's current url
+                                using pushState without relod ...</p>
+
+                            <p><a class="btn btn-default" href="https://github.com/defunkt/jquery-pjax">Jquery
+                                Pjax &raquo;</a></p>
+                        </div>
+                        <div class="col-lg-4">
+                            <h2>Single Page Application</h2>
+
+                            <p>A single-page application (SPA), is a web application or web site that fits on a single
+                                web page with the goal of providing a more fluid user experience akin to a desktop
+                                application.
+
+                                In a SPA, either all necessary code – HTML, JavaScript, and CSS – is retrieved with a
+                                single page load,[1] or the appropriate resources are dynamically loaded and added to
+                                the page as necessary ...</p>
+
+                            <p><a class="btn btn-default" href="http://en.wikipedia.org/wiki/Single-page_application">SPA &raquo;</a>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="pjax-modal" class="fade modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">...</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="container">
+        <p class="pull-left">&copy; My Company 2015</p>
+
+        <p class="pull-right">Powered by <a href="http://www.djangoproject.com/" target="_blank"
+                                            rel="external">Django</a></p>
+    </div>
+</footer>
+</body>
+
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+
+</html>

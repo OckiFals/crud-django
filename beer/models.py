@@ -5,10 +5,14 @@ BEER_CHOICES = (
     (2, 'Import'),
 )
 
+
 class Beer(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     brewery = models.ForeignKey('Brewery')
+    foto = models.CharField(max_length=60, blank=True)
+    price = models.FloatField()
+    stock = models.IntegerField()
     locality = models.IntegerField(choices=BEER_CHOICES)
     description = models.TextField(blank=True)
     

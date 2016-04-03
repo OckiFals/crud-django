@@ -1,0 +1,50 @@
+{% extends "beer/base.html" %}
+
+{% block page-title %}Edit {{ drinker.name }}'s Profile {% endblock %}
+
+{% block breadcrumb %}
+<li>
+    <i class="fa fa-home home-icon"></i>
+    <a href="{% url 'beers_all' %}">Home</a>
+</li>
+<li>
+    <i class="fa fa-fw fa-user"></i>
+    <a href="/profile/"> Profile</a>
+</li>
+<li class="active">
+    <i class="fa fa-fw fa-cog"></i> Settings
+</li>
+{% endblock %}
+
+{% block page-header %}
+<i class="fa fa-cog"></i> Edit {{ drinker.name }}'s Profile
+{% endblock %}
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {% if form.errors %}
+    <p>Please correct the following field:</p>
+    {% endif %}
+    <div class="register_div">
+        {% if form.name.errors %}<p class="error">{{ form.name.errors }}</p>{% endif %}
+        <p><label for="name">Name:</label></p>
+
+        <p> {{ form.name }}</p>
+    </div>
+    <div class="register_div">
+        {% if form.email.errors %}<p class="error">{{ form.email.errors }}</p>{% endif %}
+        <p><label for="email">Email:</label></p>
+
+        <p> {{ form.email }}</p>
+    </div>
+    <div class="register_div">
+        {% if form.birthday.errors %}<p class="error">{{ form.birthday.errors }}</p>{% endif %}
+        <p><label for="birthday">Birthday:</label></p>
+
+        <p> {{ form.birthday }}</p>
+    </div>
+    <div class="input">
+        <p><input class="btn btn-success" type="submit" value="Save" alt="save"></p>
+    </div>
+</form>
+{% endblock %}

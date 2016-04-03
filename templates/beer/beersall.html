@@ -1,24 +1,529 @@
 {% extends "beer/base.html" %}
 
+{% load locale_id %} {# load module that format price into rupiah format #}
+
 {% block content %}
-	<table class="table table-striped table-bordered">
-        <thead>
+<div>
+    <div class="grid-view">
+        <div class="summary">Showing <b>1-{{ beers|length }}</b> of <b>{{ beers_count }}</b> items.</div>
+        <table id="simple-table" class="table table-striped table-bordered table-hover">
+            <thead>
             <tr>
-                <th>Beer Name</th>
-                <th>Action</th>
+                <th width="30">#</th>
+                <th><a href="#" data-sort="name">Beer Name</a></th>
+                <th><a href="#" data-sort="name">Price</a></th>
+                <th><a href="#" data-sort="status">Status</a></th>
+                <th><a href="#" data-sort="status">Stock</a></th>
+                {% if user.is_authenticated %}
+                <th width="100">Actions</th>
+                {% endif %}
             </tr>
-        </thead>
-        <tbody>
-			{% for beer in beers %}
-				<tr>
-					<td>
-						<a href="/beers/{{ beer.slug }}">{{ beer }}</a>
-					</td>
-					<td width=250>
-					<a class="btn" href="#">test</a>
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-{% endblock %}
+            </thead>
+            <tbody>
+            {% for beer in beers %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="/beers/{{ beer.slug }}">{{ beer }}</a></td>
+                <td> {% format_rupiah beer.price %}</td>
+                {% if beer.stock >= 20 %}
+                <td><span class="label label-sm label-success arrowed">Available</span></td>
+                {% elif beer.stock >= 1 %}
+                <td><span class="label label-sm label-warning arrowed">Available</span></td>
+                {% else %}
+                <td><span class="label label-sm label-danger arrowed">Unavailable</span></td>
+                {% endif %}
+                <td>{{ beer.stock }}</td>
+                {% if user.is_authenticated %}
+                <td>
+                    <div class="hidden-sm hidden-xs btn-group">
+
+                    	{% if beer.foto %}
+                        <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#preModal"
+                                data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
+                                data-slug="{{ beer.slug }}" 
+                                data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}">
+                            <i class="ace-icon fa fa-search-plus bigger-120"></i>
+                        </button>
+                        {% else %}
+                        <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#preModal"
+                                data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
+                                data-slug="{{ beer.slug }}" 
+                                data-foto="/assets/images/beer/beer-default.jpg">
+                            <i class="ace-icon fa fa-search-plus bigger-120"></i>
+                        </button>
+                        {% endif %}
+
+                        <a class="btn btn-xs btn-info" data-toggle="modal" data-target="#myModal">
+                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                        </a>
+
+                        <button class="btn btn-xs btn-danger">
+                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        </button>
+                    </div>
+                </td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <b>Sory no Beer are available.</b>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# test ace galerry #}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-header">
+                Results for "Latest Beer Products"
+            </div>
+            <!-- PAGE CONTENT BEGINS -->
+            <div>
+                <ul class="ace-thumbnails clearfix">
+                    {% for beer in beers %}
+                    <li>
+                        {% if beer.foto %}
+                        <a href="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}" title="Photo Title"
+                           data-rel="colorbox">
+                            <img width="200" height="200" alt="{{ beer.name }}"
+                                 src="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"/>
+                        </a>
+                        {% else %}
+                        <a href="#" title="{{ beer.name }}" data-rel="colorbox">
+                            <img width="200" height="200" alt="{{ beer.name }}"
+                                 src="/assets/images/beer/beer-default.jpg"/>
+                        </a>
+                        {% endif %}
+
+
+                        <div class="tags">
+							<span class="label-holder">
+								<span class="label label-info">{{ beer.name }}</span>
+							</span>
+
+							<span class="label-holder">
+								<span class="label label-danger">{{ beer.get_locality_display }}</span>
+							</span>
+
+							<span class="label-holder">
+								{% if beer.stock >= 20 %}
+								<span class="label label-success">Stock: {{ beer.stock }}</span>
+								{% elif beer.stock >= 1 %}
+								<span class="label label-warning">Stock: {{ beer.stock }}</span>
+								{% else %}
+								<span class="label label-danger">Stock: {{ beer.stock }}</span>
+								{% endif %}
+							</span>
+
+							<span class="label-holder">
+								<span class="label label-inverse arrowed-in">{% format_rupiah beer.price %}</span>
+							</span>
+                        </div>
+
+                        <div class="tools">
+                            <a href="/beers/{{ beer.slug }}">
+                                <i class="ace-icon fa fa-search-plus"></i>
+                            </a>
+
+                            {% if user.is_authenticated and beer.stock >= 1 %}
+                            <a href="#">
+                                <i class="ace-icon fa fa-paperclip"></i>
+                            </a>
+
+                            <a href="#">
+                                <i class="ace-icon fa fa-pencil"></i>
+                            </a>
+
+                            <a href="#">
+                                <i class="ace-icon fa fa-times red"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {# end ace galerry #}
+
+</div>
+
+
+{# test data tables #}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="header smaller lighter blue">Test dataTables</h3>
+
+        <div class="table-header">
+            Results for "Latest Beers"
+        </div>
+
+        <!-- div.table-responsive -->
+
+        <!-- div.dataTables_borderWrap -->
+        <div>
+            <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center" width="40">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>Beer Name</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Stock</th>
+                    <th width="100"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for beer in beers %}
+                <tr>
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                    <td>
+                        <a href="/beers/{{ beer.slug }}">{{ beer.name }}</a>
+                    </td>
+                    <td> {% format_rupiah beer.price %}</td>
+                    {% if beer.stock >= 20 %}
+                    <td><span class="label label-sm label-success arrowed">Available</span></td>
+                    {% elif beer.stock >= 1 %}
+                    <td><span class="label label-sm label-warning arrowed">Available</span></td>
+                    {% else %}
+                    <td><span class="label label-sm label-danger arrowed">Unavailable</span></td>
+                    {% endif %}
+                    <td> {{ beer.stock }}</td>
+                    <td>
+                        {# link functions just available for authenticated user #}
+                        {% if user.is_authenticated %}
+                        <div class="hidden-sm hidden-xs action-buttons">
+                            <a class="blue" href="#">
+                                <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                            </a>
+
+                            <a class="green" href="#">
+                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                            </a>
+
+                            <a class="red" href="#">
+                                <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                            </a>
+                        </div>
+
+                        {# hiden dropdown tooltip for PDA views #}
+                        <div class="hidden-md hidden-lg">
+                            <div class="inline pos-rel">
+                                <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown"
+                                        data-position="auto">
+                                    <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                    <li>
+                                        <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+	                                            <span class="blue">
+	                                                <i class="ace-icon fa fa-search-plus bigger-120"></i>
+	                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+	                                            <span class="green">
+	                                                <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+	                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+	                                            <span class="red">
+	                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+	                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {# hiden tooltip #}
+
+                        {% else %}
+                        <div class="hidden-sm hidden-xs">
+	                            <span class="inverse">
+	                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+	                            </span>
+
+	                            <span class="inverse">
+	                                <i class="ace-icon fa fa-trash-o bigger-130"></i>
+	                            </span>
+                        </div>
+
+                        {# hiden dropdown tooltip for PDA views #}
+                        <div class="hidden-md hidden-lg">
+                            <div class="inline pos-rel">
+                                <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown"
+                                        data-position="auto">
+                                    <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                    <li>
+                                        <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+	                                            <span class="blue">
+	                                                <i class="ace-icon fa fa-search-plus bigger-120"></i>
+	                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+	                                            <span class="green">
+	                                                <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+	                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+	                                            <span class="red">
+	                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+	                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {# hiden tooltip #}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div><!-- PAGE CONTENT ENDS -->
+{% endblock %} {# block content #}
+
+{% block extra-modal %}
+<div class="modal fade" id="preModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Beer Preview</h4>
+            </div>
+            <div class="modal-body">
+                <div class="clearfix">
+                    <div class="row col-xs-12">
+                        <div class="col-xs-5" id="foto">
+                            
+                            <a href="#" title="Photo Title" data-rel="colorbox">
+                                <img width="200" height="200" alt="{{ beer.name }}"
+                                     src="/assets/images/beer/beer-default.jpg"/>
+                            </a>
+
+                        </div>
+                        <div class="col-xs-4">
+                            <p>
+                                <strong>Name: </strong>
+                                <span id="name"> </span>
+                            </p>
+
+                            <p>
+                                <strong>Brewery: </strong>
+                                <span id="brewery"> </span>
+                            </p>
+
+                            <p>
+                                <strong>Locality: </strong>
+                                {{ beer.get_locality_display }}
+                            </p>
+
+                            <p>
+                                <strong>Description: </strong>
+                                {{ beer.description }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {# block extra-modal #}
+
+{% block extra-js %}
+
+{# launch login modal on load page #}
+{% if not user.is_authenticated %}
+<script type="text/javascript">
+    $(window).load(function () {
+        $('#login').modal('show');
+    });
+</script>
+{% endif %}
+
+<script type="text/javascript">
+
+    // preModal
+    $('#preModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var name = button.data('name'); // Extract beer name from data-name attribute
+        var brewery = button.data('brewery');
+        var beerid = button.data('beerid'); // Extract beer id from data-beerid attribute
+        var slug = button.data('slug');
+        var urlfoto = button.data('foto');
+
+        var foto = '<a href="#" title="Photo Title" data-rel="colorbox" id="foto">' +
+                                        '<img width="200" height="200" alt="{{ beer.name }}"' +
+                                        'src="' + urlfoto + '"/>' +
+                    '</a>';
+
+
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this);
+        modal.find('.modal-title').text(name);
+        modal.find('.modal-body #name').text(name);
+        modal.find('.modal-body #brewery').text(brewery);
+        modal.find('.modal-body #foto').text(foto);
+        // modal.find('.modal-body input').val(recipient)
+    });
+    // end preModal
+
+    jQuery(function ($) {
+        //initiate dataTables plugin
+        var oTable1 = $('#dynamic-table')
+            //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                .dataTable({
+                    bAutoWidth: false,
+                    "aoColumns": [
+                        {"bSortable": false},
+                        null, null, null, null,
+                        {"bSortable": false}
+                    ],
+                    "aaSorting": []
+
+                    //,
+                    //"sScrollY": "200px",
+                    //"bPaginate": false,
+
+                    //"sScrollX": "100%",
+                    //"sScrollXInner": "120%",
+                    //"bScrollCollapse": true,
+                    //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
+                    //you may want to wrap the table inside a "div.dataTables_borderWrap" element
+
+                    //"iDisplayLength": 50
+                });
+        //oTable1.fnAdjustColumnSizing();
+
+        //initiate TableTools extension
+        var tableTools_obj = new $.fn.dataTable.TableTools(oTable1, {
+
+            "sRowSelector": "td:not(:last-child)",
+            "sRowSelect": "multi",
+            "fnRowSelected": function (row) {
+                //check checkbox when row is selected
+                try {
+                    $(row).find('input[type=checkbox]').get(0).checked = true
+                }
+                catch (e) {
+                }
+            },
+            "fnRowDeselected": function (row) {
+                //uncheck checkbox
+                try {
+                    $(row).find('input[type=checkbox]').get(0).checked = false
+                }
+                catch (e) {
+                }
+            },
+
+            "sSelectedClass": "success"
+
+
+        });
+
+
+        //ColVis extension
+        var colvis = new $.fn.dataTable.ColVis(oTable1, {
+            "buttonText": "<i class='fa fa-search'></i>",
+            "aiExclude": [0, 6],
+            "bShowAll": true,
+            //"bRestore": true,
+            "sAlign": "right",
+            "fnLabel": function (i, title, th) {
+                return $(th).text();//remove icons, etc
+            }
+
+        });
+
+        //style it
+        $(colvis.button()).addClass('btn-group').find('button').addClass('btn btn-white btn-info btn-bold');
+
+        //and append it to our table tools btn-group, also add tooltip
+        $(colvis.button())
+                .prependTo('.tableTools-container .btn-group')
+                .attr('title', 'Show/hide columns').tooltip({container: 'body'});
+
+        //and make the list, buttons and checkboxed Ace-like
+        $(colvis.dom.collection)
+                .addClass('dropdown-menu dropdown-light dropdown-caret dropdown-caret-right')
+                .find('li').wrapInner('<a href="javascript:void(0)" />') //'A' tag is required for better styling
+                .find('input[type=checkbox]').addClass('ace').next().addClass('lbl padding-8');
+
+
+        /////////////////////////////////
+        //table checkboxes
+        $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
+
+        //select/deselect all rows according to table header checkbox
+        $('#dynamic-table').find('> thead > tr > th input[type=checkbox]').eq(0).on('click', function () {
+            var th_checked = this.checked;//checkbox inside "TH" table header
+
+            $(this).closest('table').find('tbody > tr').each(function () {
+                var row = this;
+                if (th_checked) tableTools_obj.fnSelect(row);
+                else tableTools_obj.fnDeselect(row);
+            });
+        });
+
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#dynamic-table').on('click', 'td input[type=checkbox]', function () {
+            var row = $(this).closest('tr').get(0);
+            if (!this.checked) tableTools_obj.fnSelect(row);
+            else tableTools_obj.fnDeselect($(this).closest('tr').get(0));
+        });
+
+
+        $(document).on('click', '#dynamic-table .dropdown-toggle', function (e) {
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+
+    })
+</script>
+
+<script src="/assets/js/dataTables/jquery.dataTables.min.js"></script>
+<script src="/assets/js/dataTables/jquery.dataTables.bootstrap.min.js"></script>
+<script src="/assets/js/dataTables/dataTables.tableTools.min.js"></script>
+<script src="/assets/js/dataTables/dataTables.colVis.min.js"></script>
+{% endblock %} {# block extra-js #}

@@ -1,0 +1,59 @@
+{% extends "beer/base.html" %}
+
+{% block breadcrumb %}
+<li><a href="{% url 'home' %}">Home</a></li>
+<li><a href="{% url 'beer.views.BeersAll' %}">Beers</a></li>
+<li class="active">Register</li>
+{% endblock %}
+
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {% if form.errors %}
+    <p>Please correct the following field:</p>
+    {% endif %}
+    <div class="register_div">
+        {% if form.username.errors %}<p class="error">{{ form.username.errors }}</p>{% endif %}
+        <p><label for="username">Username:</label></p>
+
+        <p> {{ form.username }}</p>
+    </div>
+    <div class="register_div">
+        {% if form.name.errors %}<p class="error">{{ form.name.errors }}</p>{% endif %}
+        <p><label for="name">Name:</label></p>
+
+        <p> {{ form.name }}</p>
+    </div>
+    <div class="register_div">
+        {% if form.email.errors %}<p class="error">{{ form.email.errors }}</p>{% endif %}
+        <p><label for="email">Email:</label></p>
+
+        <p> {{ form.email }}</p>
+    </div>
+    <div class="register_div">
+        {% if form.birthday.errors %}<p class="error">{{ form.birthday.errors }}</p>{% endif %}
+        <p><label for="birthday">Birthday:</label></p>
+
+        <p> {{ form.birthday }}</p>
+    </div>
+    <div class="register_div">
+        {% if form.password.errors %}<p class="error">{{ form.password.errors }}</p>{% endif %}
+        <p><label for="password">Password:</label></p>
+
+        <p> {{ form.password }}</p>
+    </div>
+    <div class="register_div">
+        {% if form.password1.errors %}<p class="error">{{ form.password1.errors }}</p>{% endif %}
+        <p><label for="password1">Verify Password:</label></p>
+
+        <p> {{ form.password1 }}</p>
+    </div>
+    <div class="input">
+        <p>
+            <input class="btn btn-warning" type="submit" value="Register" alt="register">
+
+            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#login">Login</a>
+        </p>
+    </div>
+</form>
+{% endblock %}

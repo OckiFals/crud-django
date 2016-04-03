@@ -14,4 +14,3 @@ class BreweryAdmin(admin.ModelAdmin):
 
 admin.site.register(Beer, BeerAdmin)
 admin.site.register(Brewery, BreweryAdmin)
-

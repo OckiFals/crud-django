@@ -1,0 +1,32 @@
+{% extends "beer/base.html" %}
+
+{% block breadcrumb %}
+<li><a href="{% url 'home' %}">Home</a></li>
+<li><a href="{% url 'beer.views.BeersAll' %}">Beers</a></li>
+<li class="active">Login</li>
+{% endblock %}
+
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {% if form.errors %}
+    <p>Please correct the following field:</p>
+    {% endif %}
+    <div class="register_div">
+        {% if form.username.errors %}<p class="error">{{ form.username.errors }}</p>{% endif %}
+        <p><label for="username">Username:</label></p>
+
+        <p> {{ form.username }}</p>
+    </div>
+    <div class="register_div">
+        {% if form.password.errors %}<p class="error">{{ form.password.errors }}</p>{% endif %}
+        <p><label for="password">Password:</label></p>
+
+        <p> {{ form.password }}</p>
+    </div>
+    <div class="input">
+        <input class="btn btn-success" type="submit" value="Login" alt="login">
+        <a href="/register/" class="btn btn-warning" alt="signup">Sign Up</a>
+    </div>
+</form>
+{% endblock %}

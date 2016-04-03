@@ -1,30 +1,53 @@
 {% extends "beer/base.html" %}
 
+{% block breadcrumb %}
+<li>
+    <i class="ace-icon fa fa-home home-icon"></i>
+    <a href="{% url 'home' %}">Home</a>
+</li>
+<li class="active dropdown">
+    <a href="{% url 'brewerys_all' %}">
+        <i class="fa fa-fw fa-beer"></i> Brewery
+    </a>
+    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <a href="/beers"><i class="fa fa-fw fa-beer"></i> Beer</a>
+        </li>
+    </ul>
+</li>
+<li class="active">{{ beers.0.brewery }}</li>
+{% endblock %}
+
 {% block content %}
-	<div class="span10 offset1">
-	    <div class="row">
-            <h3>From {{ beers.0.brewery }}</h3>
-		</div>
-                     
-        <table class="table table-striped table-bordered">
-	        <thead>
-	            <tr>
-	                <th>Beer Name</th>
-	                <th>Action</th>
-	            </tr>
-	        </thead>
-	        <tbody>
-				{% for beer in beers %}
-					<tr>
-						<td>
-							<a href="/beers/{{ beer.slug }}">{{ beer }}</a>
-						</td>
-						<td width=250>
-						<a class="btn" href="#">test</a>
-						</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+<div class="span10 offset1">
+    <div class="row">
+        <h3>From {{ beers.0.brewery }}</h3>
     </div>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th width="30">#</th>
+            <th>Beer Name</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for beer in beers %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>
+                <a href="/beers/{{ beer.slug }}">{{ beer }}</a>
+            </td>
+            <td width=250>
+                <a class="btn" href="#">test</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
