@@ -99,5 +99,5 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
 )
 
-ADMIN_MEDIA_PREFIX = ('/static/admin/')
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 # MEDIA_ROOT = '/var/www/html/test/media/'
