@@ -40,14 +40,16 @@
                     	{% if beer.foto %}
                         <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#preModal"
                                 data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
-                                data-slug="{{ beer.slug }}" 
+                                data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
+                                data-description="{{ beer.description }}"
                                 data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}">
                             <i class="ace-icon fa fa-search-plus bigger-120"></i>
                         </button>
                         {% else %}
                         <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#preModal"
                                 data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
-                                data-slug="{{ beer.slug }}" 
+                                data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
+                                data-description="{{ beer.description }}"
                                 data-foto="/assets/images/beer/beer-default.jpg">
                             <i class="ace-icon fa fa-search-plus bigger-120"></i>
                         </button>
@@ -90,7 +92,7 @@
                         </a>
                         {% else %}
                         <a href="#" title="{{ beer.name }}" data-rel="colorbox">
-                            <img width="200" height="200" alt="{{ beer.name }}"
+                            <img width="200px" height="200px" alt="{{ beer.name }}"
                                  src="/assets/images/beer/beer-default.jpg"/>
                         </a>
                         {% endif %}
@@ -328,33 +330,32 @@
             <div class="modal-body">
                 <div class="clearfix">
                     <div class="row col-xs-12">
-                        <div class="col-xs-5" id="foto">
-                            
+                        <div class="col-xs-5" id="photo">
                             <a href="#" title="Photo Title" data-rel="colorbox">
-                                <img width="200" height="200" alt="{{ beer.name }}"
-                                     src="/assets/images/beer/beer-default.jpg"/>
+                                <img width="200" height="200" alt="{{ beer.name }}" class="photo_preview"
+                                     src=""/>
                             </a>
 
                         </div>
                         <div class="col-xs-4">
                             <p>
                                 <strong>Name: </strong>
-                                <span id="name"> </span>
+                                <span id="beer_name"> </span>
                             </p>
 
                             <p>
                                 <strong>Brewery: </strong>
-                                <span id="brewery"> </span>
+                                <span id="beer_brewery"> </span>
                             </p>
 
                             <p>
                                 <strong>Locality: </strong>
-                                {{ beer.get_locality_display }}
+                                <span id="beer_locality"> </span>
                             </p>
 
                             <p>
                                 <strong>Description: </strong>
-                                {{ beer.description }}
+                                <span id="beer_description"> </span>
                             </p>
                         </div>
                     </div>
@@ -387,28 +388,27 @@
         var name = button.data('name'); // Extract beer name from data-name attribute
         var brewery = button.data('brewery');
         var beerid = button.data('beerid'); // Extract beer id from data-beerid attribute
+        var locality = ('1' == button.data('locality')) ? 'Domestic' : 'International';
+        var description = button.data('description');
         var slug = button.data('slug');
         var urlfoto = button.data('foto');
-
-        var foto = '<a href="#" title="Photo Title" data-rel="colorbox" id="foto">' +
-                                        '<img width="200" height="200" alt="{{ beer.name }}"' +
-                                        'src="' + urlfoto + '"/>' +
-                    '</a>';
-
 
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
         var modal = $(this);
         modal.find('.modal-title').text(name);
-        modal.find('.modal-body #name').text(name);
-        modal.find('.modal-body #brewery').text(brewery);
-        modal.find('.modal-body #foto').text(foto);
+        modal.find('.modal-body #beer_name').text(name);
+        modal.find('.modal-body #beer_brewery').text(brewery);
+        modal.find('.modal-body #beer_locality').text(locality);
+        modal.find('.modal-body #beer_description').text(description);
+        modal.find('.modal-body .photo_preview').attr('src', urlfoto);
         // modal.find('.modal-body input').val(recipient)
     });
     // end preModal
 
     jQuery(function ($) {
+        var table = $('#dynamic-table');
         //initiate dataTables plugin
-        var oTable1 = $('#dynamic-table')
+        var oTable1 = table
             //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
                 .dataTable({
                     bAutoWidth: false,
@@ -456,8 +456,6 @@
             },
 
             "sSelectedClass": "success"
-
-
         });
 
 
@@ -494,7 +492,7 @@
         $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
 
         //select/deselect all rows according to table header checkbox
-        $('#dynamic-table').find('> thead > tr > th input[type=checkbox]').eq(0).on('click', function () {
+        table.find('> thead > tr > th input[type=checkbox]').eq(0).on('click', function () {
             var th_checked = this.checked;//checkbox inside "TH" table header
 
             $(this).closest('table').find('tbody > tr').each(function () {
@@ -505,7 +503,7 @@
         });
 
         //select/deselect a row when the checkbox is checked/unchecked
-        $('#dynamic-table').on('click', 'td input[type=checkbox]', function () {
+        table.on('click', 'td input[type=checkbox]', function () {
             var row = $(this).closest('tr').get(0);
             if (!this.checked) tableTools_obj.fnSelect(row);
             else tableTools_obj.fnDeselect($(this).closest('tr').get(0));
