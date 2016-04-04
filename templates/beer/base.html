@@ -34,7 +34,7 @@
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="/beers"><i class="fa fa-fw fa-beer"></i> Beers App</a>
+                                <a href="{% url 'beers_all' %}"><i class="fa fa-fw fa-beer"></i> Beers App</a>
                             </li>
                             <li>
                                 <a href="/servers" tabindex="-1"><i class="fa fa-fw fa-cloud"></i> Servers</a>
@@ -129,14 +129,14 @@
 
                         <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                             <li>
-                                <a href="/profile/settings/">
+                                <a href="{% url 'drinker_setting' %}">
                                     <i class="ace-icon fa fa-cog"></i>
                                     Settings
                                 </a>
                             </li>
 
                             <li>
-                                <a href="/profile/">
+                                <a href="{% url 'drinker_profile' %}">
                                     <i class="ace-icon fa fa-user"></i>
                                     Profile
                                 </a>
@@ -145,7 +145,7 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="/logout/">
+                                <a href="{% url 'drinker_logout' %}">
                                     <i class="ace-icon fa fa-power-off"></i>
                                    Logout
                                 </a>
@@ -158,11 +158,11 @@
                                 <i class="fa fa-fw fa-unlock"></i> Login
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/login/"><i class="fa fa-fw fa-unlock"></i> login</a></li>
+                                <li><a href="{% url 'drinker_login' %}"><i class="fa fa-fw fa-unlock"></i> login</a></li>
                                 <li>
                                     <a href="#" data-toggle="modal" data-target="#login"><i class="fa fa-fw fa-unlock"></i> Modal</a>
                                 </li>
-                                <li><a href="/register/"><i class="fa fa-fw fa-plus-square"></i> Register</a></li>
+                                <li><a href="{% url 'drinker_register' %}"><i class="fa fa-fw fa-plus-square"></i> Register</a></li>
                             </ul>
                         </li>
                     {% endif %}
@@ -236,7 +236,7 @@
                 <h4 class="modal-title" id="myModalLabel">Login</h4>
             </div>
             <div class="modal-body">
-                <form action="/login/" method="POST">
+                <form action="{% url 'drinker_login' %}" method="POST">
                     {% csrf_token %}
                     {% if form.errors %}
                     <p>Please correct the following field:</p>
@@ -257,7 +257,7 @@
                     <div class="input">
                         <p>
                             <input class="btn btn-success" type="submit" value="Login" alt="login">
-                            <a href="/register/" class="btn btn-warning" alt="signup">Sign Up</a>
+                            <a href="{% url 'drinker_register' %}" class="btn btn-warning">Sign Up</a>
                         </p>
                     </div>
                 </form>
