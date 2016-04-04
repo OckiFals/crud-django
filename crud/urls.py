@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.conf.urls import patterns, url, include
-
+from django.conf.urls import url, include
 import beer.views
 import drinker.views
 
@@ -40,9 +39,9 @@ urlpatterns = [
     url(r'^beers/(?P<beerslug>.*)/$', beer.views.SpecificBeer, name='single_beer'),
     url(r'^brewerys/$', beer.views.BrewerysAll, name='brewerys_all'),
     url(r'^brewerys/(?P<breweryslug>.*)/$', beer.views.SpecificBrewery),
-    url(r'^register/$', drinker.views.drinker_registration),
-    url(r'^profile/$', drinker.views.profile),
-    url(r'^profile/settings/$', drinker.views.edit_profile),
-    url(r'^login/$', drinker.views.login_request),
-    url(r'^logout/$', drinker.views.logout_request),
+    url(r'^register/$', drinker.views.drinker_registration, name='drinker_register'),
+    url(r'^profile/$', drinker.views.profile, name='drinker_profile'),
+    url(r'^profile/settings/$', drinker.views.edit_profile, name='drinker_setting'),
+    url(r'^login/$', drinker.views.login_request, name='drinker_login'),
+    url(r'^logout/$', drinker.views.logout_request, name='drinker_logout'),
 ]
