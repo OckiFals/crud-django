@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.conf.urls import url, include
 import beer.views
 import drinker.views
+import order.views
 
 # from django.views.generic import direct_to_template
 from people.views import PeopleList, ViewPerson, NewPerson, KillPerson, \
@@ -23,6 +24,11 @@ category_urls = [
     url(r'^Delete$', DeleteCategory.as_view(), name='category_delete'),
 ]
 
+order_urls = [
+    url(r'^$', order.views.showitems, name='order_show'),
+    url(r'^add/$', order.views.addbeer, name='order_beer'),
+]
+
 urlpatterns = [
     url(r'^$', beer.views.home, name='home'),
     url(r'^people$', PeopleList.as_view(), name='people_list'),
@@ -33,7 +39,10 @@ urlpatterns = [
     url(r'^NewCategory$', NewCategory.as_view(), name='category_add'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^servers/', include('servers.urls')),
-    
+
+    # orders app
+    url(r'^order/', include(order_urls)),
+
     # beers app
     url(r'^beers/$', beer.views.BeersAll, name='beers_all'),
     url(r'^beers/(?P<beerslug>.*)/$', beer.views.SpecificBeer, name='single_beer'),

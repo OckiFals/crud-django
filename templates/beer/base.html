@@ -44,6 +44,38 @@
                     <li class="purple"><a class="" href="#"><i class="fa fa-fw fa-info-circle"></i> About</a></li>
                     <li class="blue"><a class="" href="#"><i class="fa fa-fw fa-envelope"></i> Contact</a></li>
                     {% if user.is_authenticated %}
+                    {# shoping chart #}
+                    <li class="red" id="chart-nav">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="ace-icon fa fa-shopping-cart"></i>
+                            <span class="badge badge-success chart-count">
+                                <!-- ajax call soon -->
+                            </span>
+                        </a>
+
+                        <ul class="dropdown-menu-right dropdown-navbar navbar-primary dropdown-menu dropdown-caret dropdown-close">
+                            <li class="dropdown-header">
+                                <i class="ace-icon fa fa-exclamation-triangle"></i>
+                                <span class="chart-count">
+                                    <!-- ajax call soon -->
+                                </span> Order
+                            </li>
+
+                            <li class="dropdown-content">
+                                <ul class="dropdown-menu dropdown-navbar" id="chart-items">
+                                    <!-- ajax call soon -->
+                                </ul>
+                            </li>
+
+                            <li class="dropdown-footer" id="chart-all-items" style="display: none">
+                                <a href="{% url 'order_show' %}">
+                                    See all items
+                                    <i class="ace-icon fa fa-arrow-right"></i>
+                                 </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {# !shoping chart #}
                     <li class="green">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <i class="ace-icon fa fa-bell"></i>
@@ -281,6 +313,39 @@
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/bootstrap.min.js"></script>
 
+{# nav chart order fulfill #}
+<script type="text/javascript">
+    // unescape JSON string using |safe
+    var order_list = {% if request.session.order %}{{ request.session.order|safe }}{% else %}[]{% endif %};
+    // chart order instance node
+    var nav_order = $('#chart-nav');
+    // set order count
+    nav_order.find('.chart-count').html(order_list.length)
+
+    // if order list is not None
+    if (order_list.length >= 1) {
+        var content = '';
+
+        $.each(order_list, function (index, item) {
+            content += '' +
+            '<li>' +
+                '<a href="#">' +
+                    '<div class="clearfix">' +
+                        '<span class="pull-left">' +
+                            '<i class="btn btn-xs no-hover btn-primary fa fa-beer"></i> ' +
+                            item.beer_name +
+                        '</span>' +
+                        '<span class="pull-right badge badge-info">' + item.beer_qty + '</span>' +
+                    '</div>' +
+                '</a>' +
+            '</li>';
+        });
+        // show see all items
+        nav_order.find('#chart-all-items').show();
+        nav_order.find('#chart-items').append(content);
+    }
+</script>
+{# !nav chart order fulfill #}
 
 {% block extra-js %}
 {# extra js goes here #}
