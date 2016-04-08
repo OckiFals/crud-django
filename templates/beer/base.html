@@ -316,7 +316,7 @@
 {# nav chart order fulfill #}
 <script type="text/javascript">
     // unescape JSON string using |safe
-    var order_list = {{ request.session.order|safe }}||[];
+    var order_list = {% if request.session.order %}{{ request.session.order|safe }}{% else %}[]{% endif %};
     // chart order instance node
     var nav_order = $('#chart-nav');
     // set order count
