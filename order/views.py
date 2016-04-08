@@ -25,4 +25,4 @@ def addbeer(request):
         temp_sess.append(_dict)
         request.session['order'] = json.dumps(temp_sess)
 
-    return HttpResponse(request.session.get('order'))
+    return HttpResponse(request.session.get('order'), content_type="application/json")
