@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'servers',
     'beer',
     'drinker',
+    'order'
 )
 
 MIDDLEWARE_CLASSES = (
