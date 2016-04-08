@@ -4,6 +4,7 @@ from django.db import models
 from beer.models import Beer
 from drinker.models import Drinker
 
+
 class Order(models.Model):
     drinker = models.ForeignKey(Drinker, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now=True)
