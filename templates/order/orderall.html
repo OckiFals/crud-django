@@ -1,0 +1,275 @@
+{% extends "beer/base.html" %}
+
+{% load locale_id %} {# load module that format price into rupiah format #}
+
+{% block content %}
+<div>
+    <div class="grid-view">
+        <div class="summary">Showing <b>1-{{ order_items|length }}</b> of <b>{{ order_items|length }}</b> items.</div>
+        <table id="simple-table" class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th width="30">#</th>
+                <th><a href="#" data-sort="name">Beer Name</a></th>
+                <th><a href="#" data-sort="qty">Quantity</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in order_items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="/beers/{{ order.beer_id }}">{{ order.beer_name }}</a></td>
+                    <td>{{ order.beer_qty }}</td>
+                </tr>
+            {% empty %}
+                <b>Sory no Beer are available.</b>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# test ace galerry #}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-header">
+                Results for "Latest Beer Products"
+            </div>
+            <!-- PAGE CONTENT BEGINS -->
+            <div>
+                <ul class="ace-thumbnails clearfix">
+                    {% for beer in beers %}
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#preModal" data-beerid="{{ beer.id }}"
+                               data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
+                               data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
+                               data-description="{{ beer.description }}" data-stock="{{ beer.stock }}"
+                                    {% if beer.foto %}
+                               data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"
+                                    {% else %}
+                               data-foto="/assets/images/beer/beer-default.jpg"
+                                    {% endif %}>
+                                {% if beer.foto %}
+                                    <img width="200px" height="200px" alt="{{ beer.name }}"
+                                         src="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"/>
+                                {% else %}
+                                    <img width="200px" height="200px" alt="{{ beer.name }}"
+                                         src="/assets/images/beer/beer-default.jpg"/>
+                                {% endif %}
+                            </a>
+
+                            <div class="tags">
+							<span class="label-holder">
+								<span class="label label-info">{{ beer.name }}</span>
+							</span>
+
+							<span class="label-holder">
+								<span class="label label-danger">{{ beer.get_locality_display }}</span>
+							</span>
+
+							<span class="label-holder">
+								{% if beer.stock >= 20 %}
+                                    <span class="label label-success">Stock: {{ beer.stock }}</span>
+                                {% elif beer.stock >= 1 %}
+                                    <span class="label label-warning">Stock: {{ beer.stock }}</span>
+                                {% else %}
+                                    <span class="label label-danger">Stock: {{ beer.stock }}</span>
+                                {% endif %}
+							</span>
+
+							<span class="label-holder">
+								<span class="label label-inverse arrowed-in">{% format_rupiah beer.price %}</span>
+							</span>
+                            </div>
+
+                            <div class="tools">
+                                <a href="#" data-toggle="modal" data-target="#preModal" data-beerid="{{ beer.id }}"
+                                   data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
+                                   data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
+                                   data-description="{{ beer.description }}" data-stock="{{ beer.stock }}"
+                                        {% if beer.foto %}
+                                   data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"
+                                        {% else %}
+                                   data-foto="/assets/images/beer/beer-default.jpg"
+                                        {% endif %}>
+                                    <i class="ace-icon fa
+                                    {% if beer.stock >= 1 and user.is_authenticated %}
+                                        fa-shopping-cart
+                                    {% else %}
+                                        fa-search-plus
+                                    {% endif %}"></i>
+                                </a>
+
+                                {% if beer.stock >= 1 and user.is_authenticated %}
+                                    <a href="#">
+                                        <i class="ace-icon fa fa-pencil"></i>
+                                    </a>
+
+                                    <a href="#">
+                                        <i class="ace-icon fa fa-times red"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {# end ace galerry #}
+</div>
+<!-- PAGE CONTENT ENDS -->
+{% endblock %} {# block content #}
+
+{% block extra-modal %}
+    <div class="modal fade" id="preModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Beer Preview</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="clearfix">
+                        <div class="row col-xs-12">
+                            <div class="col-xs-5" id="photo">
+                                <a href="#" title="Photo Title" data-rel="colorbox">
+                                    <img width="200" height="200" alt="{{ beer.name }}" class="photo_preview"
+                                         src=""/>
+                                </a>
+
+                            </div>
+                            <div class="col-xs-4">
+                                <p>
+                                    <strong>Name: </strong>
+                                    <span id="beer_name"> </span>
+                                </p>
+
+                                <p>
+                                    <strong>Brewery: </strong>
+                                    <span id="beer_brewery"> </span>
+                                </p>
+
+                                <p>
+                                    <strong>Locality: </strong>
+                                    <span id="beer_locality"> </span>
+                                </p>
+
+                                <p>
+                                    <strong>Description: </strong>
+                                    <span id="beer_description"> </span>
+                                </p>
+                            </div>
+                            {# order form #}
+                            {% if user.is_authenticated %}
+                                <div class="col-xs-5">
+                                    <div class="input">
+                                        <p>
+                                            <label for="username">Quantity:
+                                                <input id="order_qty" type="number" name="quantity" min="1" max="1"
+                                                       value="1">
+                                            </label>
+                                            <input id="order_btn" class="btn btn-sm btn-success" value="Order"
+                                                   alt="order">
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {# !order form #}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} {# block extra-modal #}
+
+{% block extra-js %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var modal = $('#preModal');
+
+            var related_beer_id;
+            var related_beer_name;
+            var related_beer_qty;
+
+            modal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                related_beer_id = button.data('beerid'); // Extract beer id from data-beerid attribute
+                related_beer_name = button.data('name'); // Extract beer name from data-name attribute
+                var brewery = button.data('brewery');
+                var stock = button.data('stock');
+                var locality = ('1' == button.data('locality')) ? 'Domestic' : 'International';
+                var description = button.data('description');
+                var slug = button.data('slug');
+                var urlfoto = button.data('foto');
+
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                // set val back to 1
+                $(this).find('.modal-body #order_qty').val(1);
+                $(this).find('.modal-title').text(related_beer_name);
+                $(this).find('.modal-body #beer_name').text(related_beer_name);
+                $(this).find('.modal-body #beer_brewery').text(brewery);
+                $(this).find('.modal-body #beer_locality').text(locality);
+                $(this).find('.modal-body #beer_description').text(description);
+                $(this).find('.modal-body #order_qty').attr('max', stock);
+                $(this).find('.modal-body .photo_preview').attr('src', urlfoto);
+            });
+
+            // event click
+            modal.find('#order_btn').click(function (e) {
+                // hide modal
+                modal.modal('hide');
+                // get beer qty
+                related_beer_qty = modal.find('#order_qty').val();
+                sentorder();
+            });
+
+            function sentorder() {
+                $.post("{% url 'order_beer' %}", {
+                    beer_id: related_beer_id,
+                    beer_name: related_beer_name,
+                    beer_qty: related_beer_qty
+                }).done(function (data) {
+                    console.log(data);
+                    console.log(data.length);
+                    // chart order instance node, from base.html
+                    var nav_order = $('#chart-nav');
+                    // set order count, from base.html
+                    nav_order.find('.chart-count').html(data.length);
+                    // initial chart item child's count
+                    var items_init = nav_order.find('#chart-items').children().length;
+
+                    if (data.length > items_init) {
+                        var content = '';
+                        for (var i = items_init; i < data.length; i++) {
+                            content += '' +
+                                    '<li>' +
+                                    '<a href="#">' +
+                                    '<div class="clearfix">' +
+                                    '<span class="pull-left">' +
+                                    '<i class="btn btn-xs no-hover btn-primary fa fa-beer"></i> ' +
+                                    data[i].beer_name +
+                                    '</span>' +
+                                    '<span class="pull-right badge badge-info">' + data[i].beer_qty + '</span>' +
+                                    '</div>' +
+                                    '</a>' +
+                                    '</li>';
+                        }
+                        nav_order.find('#chart-items').append(content);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script src="/assets/js/dataTables/jquery.dataTables.min.js"></script>
+    <script src="/assets/js/dataTables/jquery.dataTables.bootstrap.min.js"></script>
+    <script src="/assets/js/dataTables/dataTables.tableTools.min.js"></script>
+    <script src="/assets/js/dataTables/dataTables.colVis.min.js"></script>
+{% endblock %} {# block extra-js #}

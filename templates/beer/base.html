@@ -335,7 +335,11 @@
                             '<i class="btn btn-xs no-hover btn-primary fa fa-beer"></i> ' +
                             item.beer_name +
                         '</span>' +
-                        '<span class="pull-right badge badge-info">' + item.beer_qty + '</span>' +
+                        '<span class="pull-right badge badge-info" id="order-beer-qty-' + 
+                            item.beer_id + '">' + item.beer_qty + 
+                        '</span>' +
+                        '<span class="order-beer-id" style="display: none">' + item.beer_id
+                        '</span>' +
                     '</div>' +
                 '</a>' +
             '</li>';
