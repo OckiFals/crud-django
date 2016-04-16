@@ -12,11 +12,15 @@ import json
 def showitems(request):
     beers = Beer.objects.all().order_by('name')[:5]
     beers_count = Beer.objects.count()
+    order_items = {}
+    
+    if 'order' in request.session:
+    	order_items = json.loads(request.session['order'])
 
     context = {
         'beers': beers,
         'beers_count': beers_count,
-        'order_items': json.loads(request.session['order'])
+        'order_items': order_items
     }
     return render_to_response('order/orderall.html', context, context_instance=RequestContext(request))
 
