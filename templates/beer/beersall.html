@@ -5,165 +5,7 @@
 {% block content %}
 <div>
     <div class="grid-view">
-        <div class="summary">Showing <b>1-{{ beers|length }}</b> of <b>{{ beers_count }}</b> items.</div>
-        <table id="simple-table" class="table table-striped table-bordered table-hover">
-            <thead>
-            <tr>
-                <th width="30">#</th>
-                <th><a href="#" data-sort="name">Beer Name</a></th>
-                <th><a href="#" data-sort="name">Price</a></th>
-                <th><a href="#" data-sort="status">Status</a></th>
-                <th><a href="#" data-sort="status">Stock</a></th>
-                {% if user.is_authenticated %}
-                <th width="100">Actions</th>
-                {% endif %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for beer in beers %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td><a href="/beers/{{ beer.slug }}">{{ beer }}</a></td>
-                <td> {% format_rupiah beer.price %}</td>
-                {% if beer.stock >= 20 %}
-                <td><span class="label label-sm label-success arrowed">Available</span></td>
-                {% elif beer.stock >= 1 %}
-                <td><span class="label label-sm label-warning arrowed">Available</span></td>
-                {% else %}
-                <td><span class="label label-sm label-danger arrowed">Unavailable</span></td>
-                {% endif %}
-                <td>{{ beer.stock }}</td>
-                {% if user.is_authenticated %}
-                <td>
-                    <div class="hidden-sm hidden-xs btn-group">
-
-                        <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#preModal"
-                                data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
-                                data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
-                                data-description="{{ beer.description }}"
-                                {% if beer.foto %}
-                                data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"
-                                {% else %}
-                                data-foto="/assets/images/beer/beer-default.jpg"
-                                {% endif %}
-                                >
-                            <i class="ace-icon fa fa-search-plus bigger-120"></i>
-                        </button>
-
-                        <a class="btn btn-xs btn-info" data-toggle="modal" data-target="#myModal">
-                            <i class="ace-icon fa fa-pencil bigger-120"></i>
-                        </a>
-
-                        <button class="btn btn-xs btn-danger">
-                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                        </button>
-                    </div>
-                </td>
-                {% endif %}
-            </tr>
-            {% empty %}
-            <b>Sory no Beer are available.</b>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    {# test ace galerry #}
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="table-header">
-                Results for "Latest Beer Products"
-            </div>
-            <!-- PAGE CONTENT BEGINS -->
-            <div>
-                <ul class="ace-thumbnails clearfix">
-                    {% for beer in beers %}
-                    <li>
-                        <a href="#" data-toggle="modal" data-target="#preModal" data-beerid="{{ beer.id }}"
-                                data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
-                                data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
-                                data-description="{{ beer.description }}" data-stock="{{ beer.stock }}"
-                                {% if beer.foto %}
-                                data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"
-                                {% else %}
-                                data-foto="/assets/images/beer/beer-default.jpg"
-                                {% endif %}>
-                            {% if beer.foto %}
-                            <img width="200px" height="200px" alt="{{ beer.name }}"
-                                 src="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"/>
-                            {% else %}
-                                <img width="200px" height="200px" alt="{{ beer.name }}"
-                                 src="/assets/images/beer/beer-default.jpg"/>
-                            {% endif %}
-                        </a>
-
-                        <div class="tags">
-							<span class="label-holder">
-								<span class="label label-info">{{ beer.name }}</span>
-							</span>
-
-							<span class="label-holder">
-								<span class="label label-danger">{{ beer.get_locality_display }}</span>
-							</span>
-
-							<span class="label-holder">
-								{% if beer.stock >= 20 %}
-								<span class="label label-success">Stock: {{ beer.stock }}</span>
-								{% elif beer.stock >= 1 %}
-								<span class="label label-warning">Stock: {{ beer.stock }}</span>
-								{% else %}
-								<span class="label label-danger">Stock: {{ beer.stock }}</span>
-								{% endif %}
-							</span>
-
-							<span class="label-holder">
-								<span class="label label-inverse arrowed-in">{% format_rupiah beer.price %}</span>
-							</span>
-                        </div>
-
-                        <div class="tools">
-                            <a href="#" data-toggle="modal" data-target="#preModal" data-beerid="{{ beer.id }}"
-                                data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
-                                data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
-                                data-description="{{ beer.description }}" data-stock="{{ beer.stock }}"
-                                {% if beer.foto %}
-                                data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"
-                                {% else %}
-                                data-foto="/assets/images/beer/beer-default.jpg"
-                                {% endif %}>
-                                <i class="ace-icon fa
-                                    {% if beer.stock >= 1 and user.is_authenticated %}
-                                        fa-shopping-cart
-                                    {% else %}
-                                        fa-search-plus
-                                    {% endif %}"></i>
-                            </a>
-
-                            {% if beer.stock >= 1 and user.is_authenticated %}
-                            <a href="#">
-                                <i class="ace-icon fa fa-pencil"></i>
-                            </a>
-
-                            <a href="#">
-                                <i class="ace-icon fa fa-times red"></i>
-                            </a>
-                            {% endif %}
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-    {# end ace galerry #}
-
-</div>
-
-
-{# test data tables #}
-<div class="row">
-    <div class="col-xs-12">
-        <h3 class="header smaller lighter blue">Test dataTables</h3>
+        {# test data tables #}
 
         <div class="table-header">
             Results for "Latest Beers"
@@ -216,9 +58,18 @@
                         {# link functions just available for authenticated user #}
                         {% if user.is_authenticated %}
                         <div class="hidden-sm hidden-xs action-buttons">
-                            <a class="blue" href="#">
-                                <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                            </a>
+                            <a class="blue" data-toggle="modal" data-target="#preModal" data-beerid="{{ beer.id }}"
+                                data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
+                                data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
+                                data-description="{{ beer.description }}" data-stock="{{ beer.stock }}"
+                                {% if beer.foto %}
+                                data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"
+                                {% else %}
+                                data-foto="/assets/images/beer/beer-default.jpg"
+                                {% endif %}
+                                >
+	                            <i class="ace-icon fa fa-search-plus bigger-120"></i>
+	                        </a>
 
                             <a class="green" href="#">
                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
@@ -322,7 +173,96 @@
         </div>
     </div>
 
-</div><!-- PAGE CONTENT ENDS -->
+    {# test ace galerry #}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-header">
+                Results for "Popular Beer Products"
+            </div>
+            <!-- PAGE CONTENT BEGINS -->
+            <div>
+                <ul class="ace-thumbnails clearfix">
+                    {% for beer in beers %}
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#preModal" data-beerid="{{ beer.id }}"
+                                data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
+                                data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
+                                data-description="{{ beer.description }}" data-stock="{{ beer.stock }}"
+                                {% if beer.foto %}
+                                data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"
+                                {% else %}
+                                data-foto="/assets/images/beer/beer-default.jpg"
+                                {% endif %}>
+                            {% if beer.foto %}
+                            <img width="200px" height="200px" alt="{{ beer.name }}"
+                                 src="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"/>
+                            {% else %}
+                                <img width="200px" height="200px" alt="{{ beer.name }}"
+                                 src="/assets/images/beer/beer-default.jpg"/>
+                            {% endif %}
+                        </a>
+
+                        <div class="tags">
+							<span class="label-holder">
+								<span class="label label-info">{{ beer.name }}</span>
+							</span>
+
+							<span class="label-holder">
+								<span class="label label-danger">{{ beer.get_locality_display }}</span>
+							</span>
+
+							<span class="label-holder">
+								{% if beer.stock >= 20 %}
+								<span class="label label-success">Stock: {{ beer.stock }}</span>
+								{% elif beer.stock >= 1 %}
+								<span class="label label-warning">Stock: {{ beer.stock }}</span>
+								{% else %}
+								<span class="label label-danger">Stock: {{ beer.stock }}</span>
+								{% endif %}
+							</span>
+
+							<span class="label-holder">
+								<span class="label label-inverse arrowed-in">{% format_rupiah beer.price %}</span>
+							</span>
+                        </div>
+
+                        <div class="tools">
+                            <a href="#" data-toggle="modal" data-target="#preModal" data-beerid="{{ beer.id }}"
+                                data-name="{{ beer.name }}" data-brewery="{{ beer.brewery }}"
+                                data-slug="{{ beer.slug }}" data-locality="{{ beer.locality }}"
+                                data-description="{{ beer.description }}" data-stock="{{ beer.stock }}"
+                                {% if beer.foto %}
+                                data-foto="/assets/images/beer/{{ beer.brewery.slug }}/{{ beer.foto }}"
+                                {% else %}
+                                data-foto="/assets/images/beer/beer-default.jpg"
+                                {% endif %}>
+                                <i class="ace-icon fa
+                                    {% if beer.stock >= 1 and user.is_authenticated %}
+                                        fa-shopping-cart
+                                    {% else %}
+                                        fa-search-plus
+                                    {% endif %}"></i>
+                            </a>
+
+                            {% if beer.stock >= 1 and user.is_authenticated %}
+                            <a href="#">
+                                <i class="ace-icon fa fa-pencil"></i>
+                            </a>
+
+                            <a href="#">
+                                <i class="ace-icon fa fa-times red"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {# end ace galerry #}
+
+</div>
 {% endblock %} {# block content #}
 
 {% block extra-modal %}
