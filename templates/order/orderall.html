@@ -236,32 +236,46 @@
                     beer_name: related_beer_name,
                     beer_qty: related_beer_qty
                 }).done(function (data) {
-                    console.log(data);
-                    console.log(data.length);
                     // chart order instance node, from base.html
                     var nav_order = $('#chart-nav');
-                    // set order count, from base.html
-                    nav_order.find('.chart-count').html(data.length);
                     // initial chart item child's count
                     var items_init = nav_order.find('#chart-items').children().length;
+                    // is new order item invoke?
+                    var is_new_order = true;
 
-                    if (data.length > items_init) {
-                        var content = '';
-                        for (var i = items_init; i < data.length; i++) {
-                            content += '' +
-                                    '<li>' +
-                                    '<a href="#">' +
-                                    '<div class="clearfix">' +
-                                    '<span class="pull-left">' +
+                    $.each(nav_order.find('#chart-items').children(), function (index, item) {
+                        // reference to iterate chart items
+                        if (item.getElementsByTagName('span')[2].innerHTML == data.beer_id) {
+                            var item_qty_init = parseInt(item.getElementsByTagName('span')[1].innerHTML);
+                            item.getElementsByTagName('span')[1].innerHTML = item_qty_init + parseInt(data.beer_qty)
+                            is_new_order = false;
+                            return false; // exit iteration
+                        }        
+                    });
+
+                    if (is_new_order) {
+                        var content = '' +
+                        // list node for new beer order
+                        '<li>' +
+                            '<a href="#">' +
+                            '<div class="clearfix">' +
+                                '<span class="pull-left">' +
                                     '<i class="btn btn-xs no-hover btn-primary fa fa-beer"></i> ' +
-                                    data[i].beer_name +
-                                    '</span>' +
-                                    '<span class="pull-right badge badge-info">' + data[i].beer_qty + '</span>' +
-                                    '</div>' +
-                                    '</a>' +
-                                    '</li>';
-                        }
+                                    data.beer_name +
+                                '</span>' +
+                                '<span class="pull-right badge badge-info" id="order-beer-qty-' + 
+                                    data.beer_id + '">' + data.beer_qty + 
+                                '</span>' +
+                                '<span class="order-beer-id" style="display: none">' + data.beer_id
+                                '</span>' +
+                            '</div>' +
+                            '</a>' +
+                        '</li>';
+                        // re-set order count, from base.html
+                        nav_order.find('.chart-count').html(items_init+1);             
                         nav_order.find('#chart-items').append(content);
+                        // show all order items anchor node
+                        nav_order.find('#chart-all-items').show();
                     }
                 });
             }
