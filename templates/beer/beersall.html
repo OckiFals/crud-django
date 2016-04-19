@@ -349,16 +349,17 @@
         var related_beer_id;
         var related_beer_name;
         var related_beer_qty;
+        var related_beer_slug;
 
         modal.on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget); // Button that triggered the modal
             related_beer_id = button.data('beerid'); // Extract beer id from data-beerid attribute
             related_beer_name = button.data('name'); // Extract beer name from data-name attribute
+            related_beer_slug = button.data('slug');
             var brewery = button.data('brewery');
             var stock = button.data('stock');
             var locality = ('1' == button.data('locality')) ? 'Domestic' : 'International';
             var description = button.data('description');
-            var slug = button.data('slug');
             var urlfoto = button.data('foto');
 
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
@@ -386,6 +387,7 @@
             $.post("{% url 'order_beer' %}", {
                 beer_id: related_beer_id,
                 beer_name: related_beer_name,
+                beer_slug: related_beer_slug,
                 beer_qty: related_beer_qty
             }).done(function (data) {
                 // chart order instance node, from base.html

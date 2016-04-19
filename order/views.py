@@ -15,7 +15,7 @@ def showitems(request):
     order_items = {}
     
     if 'order' in request.session:
-    	order_items = json.loads(request.session['order'])
+        order_items = json.loads(request.session['order'])
 
     context = {
         'beers': beers,
@@ -32,6 +32,7 @@ def addbeer(request):
     _dict = {
         'beer_id': form.data['beer_id'],  # FIXME why form.cleaned_data is undefined?
         'beer_name': form.data['beer_name'],
+        'beer_slug': form.data['beer_slug'],
         'beer_qty': form.data['beer_qty']
     }
 
