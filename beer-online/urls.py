@@ -27,6 +27,7 @@ category_urls = [
 order_urls = [
     url(r'^$', order.views.showitems, name='order_show'),
     url(r'^add/$', order.views.addbeer, name='order_beer'),
+    url(r'^delete/$', order.views.deletebeer, name='order_beer_delete')
 ]
 
 urlpatterns = [

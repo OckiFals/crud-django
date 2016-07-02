@@ -59,9 +59,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'crud.urls'
+ROOT_URLCONF = 'beer-online.urls'
 
-WSGI_APPLICATION = 'crud.wsgi.application'
+WSGI_APPLICATION = 'beer-online.wsgi.application'
 
 
 # Database
