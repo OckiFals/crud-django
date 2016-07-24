@@ -31,7 +31,8 @@ order_urls = [
 ]
 
 urlpatterns = [
-    url(r'^$', beer.views.home, name='home'),
+    url(r'^$', beer.views.beersall, name='beers_all'),
+
     url(r'^people$', PeopleList.as_view(), name='people_list'),
     url(r'^(?P<slug>[\w-]+).person/', include(person_urls)),
     url(r'^NewPerson$', NewPerson.as_view(), name='person_add'),
@@ -45,8 +46,7 @@ urlpatterns = [
     url(r'^order/', include(order_urls)),
 
     # beers app
-    url(r'^beers/$', beer.views.BeersAll, name='beers_all'),
-    url(r'^beers/(?P<beerslug>.*)/$', beer.views.SpecificBeer, name='single_beer'),
+    url(r'^(?P<beerslug>.*)/$', beer.views.SpecificBeer, name='single_beer'),
     url(r'^brewerys/$', beer.views.BrewerysAll, name='brewerys_all'),
     url(r'^brewerys/(?P<breweryslug>.*)/$', beer.views.SpecificBrewery),
     url(r'^register/$', drinker.views.drinker_registration, name='drinker_register'),

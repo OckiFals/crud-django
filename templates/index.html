@@ -12,25 +12,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span></button>
-                    <a class="navbar-brand" href="{% url 'home' %}"><i class="fa fa-rocket"></i> Delivery Online</a>
+                    <a class="navbar-brand" href="{% url 'beers_all' %}"><i class="fa fa-rocket"></i> Delivery Online</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active">
-                            <a href="{% url 'home' %}"><i class="fa fa-fw fa-home"></i> Home</a>
-                        </li>
-                        <li class="dropdown grey">
-                            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa fa-fw fa-sitemap">
-                            </i> Projects <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <a href="{% url 'beers_all' %}"><i class="fa fa-fw fa-beer"></i> Beers App</a>
-                                </li>
-                                <li>
-                                    <a href="/servers" tabindex="-1"><i class="fa fa-fw fa-cloud"></i> Servers</a>
-                                </li>
-                            </ul>
+                            <a href="{% url 'beers_all' %}"><i class="fa fa-fw fa-home"></i> Home</a>
                         </li>
                         <li><a class="pjax-nav-menu" href="#" data-pjax="#pjax-container"><i
                                 class="fa fa-fw fa-user"></i> About</a></li>

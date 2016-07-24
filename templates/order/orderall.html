@@ -6,23 +6,41 @@
 <div>
     <div class="grid-view">
         <div class="summary">Showing <b>1-{{ order_items|length }}</b> of <b>{{ order_items|length }}</b> items.</div>
-        <table id="simple-table" class="table table-striped table-bordered table-hover">
+        <table id="order-table" class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
                 <th width="30">#</th>
                 <th><a href="#" data-sort="name">Beer Name</a></th>
                 <th><a href="#" data-sort="qty">Quantity</a></th>
+                <th width="75"></th>
             </tr>
             </thead>
             <tbody>
             {% for order in order_items %}
-                <tr>
+                <tr id="order-id-{{ order.beer_id }}">
                     <td>{{ forloop.counter }}</td>
                     <td><a href="/beers/{{ order.beer_slug }}">{{ order.beer_name }}</a></td>
                     <td>{{ order.beer_qty }}</td>
+                    <td>
+                        <div class="hidden-sm hidden-xs btn-group">
+                            <a class="btn btn-xs btn-info">
+                                <i class="ace-icon fa fa-pencil bigger-120"></i>
+                            </a>
+
+                            <a href="#" data-toggle="modal" data-target="#confModal" 
+                                data-beer-id="{{ order.beer_id }}" class="btn btn-xs btn-danger">
+                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             {% empty %}
-                <b>Sory no Beer are available.</b>
+                <tr id="no-order">
+                    <td></td>
+                    <td><b>You don't have any order.</b></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             {% endfor %}
             </tbody>
         </table>
@@ -171,7 +189,7 @@
                                                        value="1">
                                             </label>
                                             <input id="order_btn" class="btn btn-sm btn-success" value="Order"
-                                                   alt="order">
+                                                   data-dismiss="modal" alt="order">
                                         </p>
                                     </div>
                                 </div>
@@ -186,6 +204,28 @@
             </div>
         </div>
     </div>
+
+    {# confirmation modal #}
+    <div class="modal fade" id="confModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmationModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="conf-btn-yes" class="btn btn-danger" data-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# /confirmation modal #}
 {% endblock %} {# block extra-modal #}
 
 {% block extra-js %}
@@ -193,12 +233,13 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var modal = $('#preModal');
+            var confModal = $('#confModal');
 
             var related_beer_id;
             var related_beer_name;
             var related_beer_qty;
             var related_beer_slug;
-
+            // modal triggered
             modal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget); // Button that triggered the modal
                 related_beer_id = button.data('beerid'); // Extract beer id from data-beerid attribute
@@ -224,12 +265,38 @@
 
             // event click
             modal.find('#order_btn').click(function (e) {
-                // hide modal
-                modal.modal('hide');
                 // get beer qty
                 related_beer_qty = modal.find('#order_qty').val();
                 sentorder();
             });
+
+            // confirmation modal triggered
+            confModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+
+                $(this).find('#conf-btn-yes').click(function (e) {
+                    deleteOrder(button.data('beer-id'));
+                });
+            });
+
+            function deleteOrder(id) {
+                $.ajax({
+                    url: "{% url 'order_beer_delete' %}",
+                    type: 'DELETE',
+                    data: {
+                        beer_id: id
+                    }
+                }).done(function (data) {
+                    var table = $('#order-table'); 
+                    table.find('#order-id-' + id).remove();
+
+                    if (table.find('tbody').children().length == 0) {
+                        table.find('tbody').html("<tr id='no-order'><td></td><td><b>You don't have any order.</b>" +
+                            "</td><td></td><td></td></tr>"
+                        );
+                    }
+                });
+            }
 
             function sentorder() {
                 $.post("{% url 'order_beer' %}", {
@@ -268,7 +335,7 @@
                                 '<span class="pull-right badge badge-info" id="order-beer-qty-' + 
                                     data.beer_id + '">' + data.beer_qty + 
                                 '</span>' +
-                                '<span class="order-beer-id" style="display: none">' + data.beer_id
+                                '<span class="order-beer-id" style="display: none">' + data.beer_id +
                                 '</span>' +
                             '</div>' +
                             '</a>' +

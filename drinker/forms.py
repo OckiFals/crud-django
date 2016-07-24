@@ -23,8 +23,9 @@ class RegistrationForm(ModelForm):
             User.objects.get(username=username)
         except User.DoesNotExist:
             return username
-        raise forms.ValidationError("That username already taken, please \
-        select another")
+        raise forms.ValidationError(
+            "That username already taken, please select another"
+        )
 
     def clean(self):
         password = self.cleaned_data['password']

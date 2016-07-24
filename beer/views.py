@@ -4,11 +4,7 @@ from beer.models import Beer, Brewery
 from drinker.forms import LoginForm
 
 
-def home(request):
-    return render_to_response('index.html')
-
-
-def BeersAll(request):
+def beersall(request):
     beers = Beer.objects.all().order_by('name')[:5]
     beers_count = Beer.objects.count()
 

@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response
@@ -47,10 +47,34 @@ def addbeer(request):
                     int(sess['beer_qty']) + int(_dict['beer_qty'])
                 )
                 break
-
         else:
             temp_sess.append(_dict)
 
         request.session['order'] = json.dumps(temp_sess)
 
     return HttpResponse(json.dumps(_dict), content_type="application/json")
+
+
+@login_required
+@csrf_exempt
+def deletebeer(request):
+    temp_sess = json.loads(request.session['order'])
+    delete = QueryDict(request.body)
+    beer_id = delete.get('beer_id')
+
+    for index, sess in enumerate(temp_sess):
+        if sess['beer_id'] == beer_id:
+            del temp_sess[index]
+            request.session['order'] = json.dumps(temp_sess)
+            data = {
+                'status': 'Ok',
+                'message': 'Beer order with id=' + beer_id + ' has been successfully removed'
+            }
+            break
+    else:
+        data = {
+            'status': 'NotFound',
+            'message': 'Beer order with id=' + beer_id + ' not found'
+        }
+
+    return HttpResponse(json.dumps(data), content_type="application/json")

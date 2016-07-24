@@ -21,25 +21,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span></button>
-                <a class="navbar-brand" href="{% url 'home' %}"><i class="fa fa-rocket"></i> Delivery Online</a>
+                <a class="navbar-brand" href="{% url 'beers_all' %}"><i class="fa fa-rocket"></i> Delivery Online</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav ace-nav navbar-right">
                     <li class="active">
                         <a href="{% url 'beers_all' %}"><i class="fa fa-fw fa-home"></i> Home</a>
-                    </li>
-                    <li class="dropdown grey">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa fa-fw fa-sitemap">
-                        </i> Projects <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="{% url 'beers_all' %}"><i class="fa fa-fw fa-beer"></i> Beers App</a>
-                            </li>
-                            <li>
-                                <a href="/servers" tabindex="-1"><i class="fa fa-fw fa-cloud"></i> Servers</a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="purple"><a class="" href="#"><i class="fa fa-fw fa-info-circle"></i> About</a></li>
                     <li class="blue"><a class="" href="#"><i class="fa fa-fw fa-envelope"></i> Contact</a></li>
@@ -211,7 +198,7 @@
                     {% block breadcrumb %}
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="{% url 'home' %}">Home</a>
+                        <a href="{% url 'beers_all' %}">Home</a>
                     </li>
                     <li class="active dropdown">
                         <a href="{% url 'beers_all' %}">
